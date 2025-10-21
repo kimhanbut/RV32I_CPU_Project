@@ -41,78 +41,48 @@
 
 ## 3. 시스템 구성도
 <br>
-<img width="400" src="https://github.com/user-attachments/assets/e9272d1f-6fa2-4220-8b6d-801749385b6a" />
 
-###### FFT Top module block diagram
-- 초기 9bit 입력이 실, 허수부에 16개씩 병렬적으로 입력됩니다.
-- 즉, 512개 입력은 32clk 동안 들어오게 됩니다.
-- 출력은 13bit로 512개 data가 동시에 출력됩니다.
----
-<br>
+#### 3-1. Data Path Hardware
 
-<img width="1000" src="https://github.com/user-attachments/assets/21ebcd15-2fae-4e9b-a089-b63b003fd8e9" />
+<img width="1000" src="https://github.com/user-attachments/assets/9bf3a352-815f-46a9-83ce-4db929de57b9" />
 
 
-###### Sub-module block diagram
-- 입력이 16개씩 병렬적으로 들어오게 되고, 첫번째 butterfly 연산은 258개 data를 덧, 뺄셈 하므로 shfit regisgter가 필수적입니다.
-- 이후 butterfly 연산도 1clk 16개씩 들어오기 때문에 128개씩 두번 연산으로 인해 128크기의 shift 레지스터가 하나 필요합니다.
-- 128개씩 연산을 두번 해야 하므로 256개 데이터를 저장해줄 shift regisgter도 하나 필요합니다.
-- 이후 연산 구조는 butterfly1_2까지 동일한 구조를 가집니다.
+- Instruction Memory(ROM)
+    - 명령어 집합이 저장된 메모리. PC register로부터 주소를 전달받아 명령어를 출력
 
----
-<br>
+- Register File
+    - CPU 내부 저장장치. 주소를 입력받아 읽기, 쓰기 동작을 수행
 
-<img width="1000" src="https://github.com/user-attachments/assets/6937dcf3-b569-40a1-8bfc-4df0e0d52ad2" />
+- ALU
+    - Register file에서 읽은 값 또는 imm(즉시값)을 이용하여 덧셈, 뺄셈, 곱셈, shift 등의 연산을 수행
+- Imm Extend
+    - Instruction code에 따라 해당하는 imm(즉시값)을 출력
 
+- Store Concat
+    - Half, Byte 단위의 store 연산을 위해 설계한 모듈
+    - Half, byte 범위 외 데이터 무결성 보장을 위해 RAM에서 데이터를 받아 연산하도록 설계
 
-###### Timing Diagram
-- butterfly12 이후부터는 1클럭 마다 한번의 butterfly연산이 진행되므로 shift register가 필요 없어집니다.
-- 병렬적으로 들어오는 16개 데이터를 순서대로 병렬 연산하고 출력하게 됩니다.
-
----
-<br>
-
-- **step0**
-<img width="600" src="https://github.com/user-attachments/assets/d8de862c-e9d3-4167-9418-ab23fd4064ed" />
-
-    - 들어오는 값에 대해 덧셈과 뺄셈 연산을 진행합니다.
-    - Twiddle factor를 곱한 뒤 결과를 출력합니다. Twiddle factor = [1, 1, 1, -j]
-
-<br>
-
-- **step1**
-<img width="600" src="https://github.com/user-attachments/assets/3c8feb4f-b365-424a-a8c2-4c30b937c41c" />
-
-    - 들어오는 값에 대해 덧셈과 뺄셈 연산을 진행합니다.
-    - Twiddle factor를 곱한 뒤 결과를 출력합니다. Twiddle factor = [1, 1, 1, -1i, 1, 0.7071-0.7071j, 1, -0.7071-0.7071j]
-<br>
-
-- **step2**
-<img width="600" src="https://github.com/user-attachments/assets/4a425ce8-db84-4ee7-8291-c7003a4daa49" />
-
-    - 들어오는 값에 대해 덧셈과 뺄셈 연산을 진행합니다.
-    - Twiddle factor를 곱한 뒤 결과를 출력합니다.
-    - 이 경우 twiddle factor는 512 point에 대해 각각 다른 값이 배정되므로 ROM의 형태로 저장하여 연산을 진행합니다.
----
+- Load Ext
+    - Half, Byte 단위의 Load 연산을 위해 설계한 모듈
+    - Instruction code에 따라 half, byte 데이터의 sign bit extend, zero extend를 결정
 <br>
 
 
-- **CBFP**
-    - 일정 단위로 block으로 판단한 뒤 연산을 진행합니다.
-    <img width="600" src="https://github.com/user-attachments/assets/c5431c34-1bf0-45ed-ad1b-3586b3a1a192" />
 
-    - block 내부의 각 값에 대하여, signbit 갯수를 셉니다.
-    <img width="600" src="https://github.com/user-attachments/assets/26049084-b671-452d-bb49-87c5724ad3ce" />
+#### 3-2. Control Unit FSM
 
-    - block 내부에서 count한 signbit 갯수 중 최솟값을 찾아냅니다.
-    - 실수와 허수 중 더 작은 최솟값을 기준으로 right shift합니다.
----
+<img width="1000" src="https://github.com/user-attachments/assets/b56f08fb-42ab-4f06-8b6d-59d4edda2309" />
+
+
+
+
 <br>
 
 
 
 
 ## 4. Logic Synthesis
+
 <br>
 
 >---
