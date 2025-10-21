@@ -1,5 +1,6 @@
 # RV32I Multi Cycle CPU 설계
-<img width="1000" src="https://github.com/user-attachments/assets/19bb2e17-0a7d-48be-873d-beb99b2c52a8" />
+<img width="1000" src="https://github.com/user-attachments/assets/d408e213-c119-4e09-b13c-cb2e9f82d963" />
+
 
 <br>
 
