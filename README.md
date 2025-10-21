@@ -9,7 +9,7 @@
 - [1. 개요](#1-개요)
 - [2. 역할](#2-역할)
 - [3. 시스템 구성도 ](#3-시스템-구성도)
-- [4. Logic Synthesis](#4-시스템-구성도)
+- [4. Logic Synthesis](#4-Logic-Synthesis)
 - [5. 검증 결과](#5-검증-결과)
   - [5-1. COS 입력에 대한 검증 결과](#5-1-cos-입력에-대한-검증-결과)
   - [5-2. Random 입력에 대한 검증 결과](#5-2-random-입력에-대한-검증-결과)
@@ -40,21 +40,6 @@
 
 
 ## 3. 시스템 구성도
-
-- 하드웨어 내부적으로 floating point 연산을 하는 것은 불가능합니다.
-- 각 module 입, 출력 부분 마다 bit 수를 조절하며 rounding, saturation, CBFP등의 비트 관리가 필수적입니다.
-- 아래는 floating point fft와 CBFP를 적용하지 않는 fixed point fft의 연산결과입니다.
-<img width="800" src="https://github.com/user-attachments/assets/ff5a70ff-cf03-46bd-9b08-3a9752a0a099" />
-
-- 이렇듯 hardware연산에서 floating point 연산의 정확도에 근접하기 위해서는 CBFP와 같은 연산이 필수적입니다.
-- 아래는 CBFP 적용 전과 이후의 SQNR그래프입니다.
-<img width="800" src="https://github.com/user-attachments/assets/ee4c4cf3-31a8-44ff-a3e6-0942c6cdb2e5" />
-
----
-<br>
-
-
-## 4. 시스템 구성도
 <br>
 <img width="400" src="https://github.com/user-attachments/assets/e9272d1f-6fa2-4220-8b6d-801749385b6a" />
 
@@ -127,7 +112,7 @@
 
 
 
-## 5. 검증 결과
+## 4. Logic Synthesis
 <br>
 
 >---
@@ -203,7 +188,7 @@
 
 
 
-## 6. Logic Synthesis & VIVADO bitstream
+## 5. 검증 결과
 >---
 >#### Logic Synthesis(Design compiler)
 ><img width="400" src="https://github.com/user-attachments/assets/e3b2258e-c9e7-4807-9aa3-f66b7c3df768" />
@@ -228,7 +213,8 @@
 >
 <br>
 
-## 7. Trouble Shooting
+
+## 6. Trouble Shooting
 
 
 >---
